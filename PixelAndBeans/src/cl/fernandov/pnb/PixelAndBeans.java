@@ -1,4 +1,6 @@
-package cl.fernando.pnb.gui;
+package cl.fernandov.pnb;
+
+import cl.fernandov.pnb.gui.LoginFrame;
 
 import javax.swing.SwingUtilities;
 

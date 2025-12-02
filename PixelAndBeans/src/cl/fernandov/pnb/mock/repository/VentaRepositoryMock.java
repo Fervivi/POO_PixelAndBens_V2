@@ -1,0 +1,103 @@
+package cl.fernandov.pnb.mock.repository;
+
+import cl.fernandov.pnb.model.Venta;
+import cl.fernandov.pnb.repository.IVentaRepository;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * Implementación Mock (en memoria) del repositorio de Venta
+ */
+public class VentaRepositoryMock implements IVentaRepository {
+
+    private final List<Venta> ventas;
+    private int nextId;
+
+    public VentaRepositoryMock() {
+        ventas = new ArrayList<>();
+        nextId = 1;
+        cargarDatosIniciales();
+    }
+
+    private void cargarDatosIniciales() {
+        // Ventas de ejemplo (ID de usuario 1=admin, 2=operador1)
+        LocalDateTime ahora = LocalDateTime.now();
+
+        ventas.add(new Venta(nextId++, ahora.minusHours(5), 1, "admin", 7500, "ACTIVA"));
+        ventas.add(new Venta(nextId++, ahora.minusHours(4), 2, "operador1", 5000, "ACTIVA"));
+        ventas.add(new Venta(nextId++, ahora.minusHours(3), 1, "admin", 12000, "ACTIVA"));
+        ventas.add(new Venta(nextId++, ahora.minusHours(1), 2, "operador1", 8500, "ANULADA"));
+        ventas.add(new Venta(nextId++, ahora.minusMinutes(30), 1, "admin", 6000, "ACTIVA"));
+    }
+
+    @Override
+    public Venta buscarPorId(int id) {
+        return ventas.stream()
+                .filter(v -> v.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public List<Venta> listarTodas() {
+        return new ArrayList<>(ventas);
+    }
+
+    @Override
+    public List<Venta> listarPorRangoFechas(LocalDateTime desde, LocalDateTime hasta) {
+        return ventas.stream()
+                .filter(v -> !v.getFechaHora().isBefore(desde) &&
+                        !v.getFechaHora().isAfter(hasta))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Venta> listarDelDia() {
+        LocalDateTime inicioDia = LocalDate.now().atStartOfDay();
+        LocalDateTime finDia = inicioDia.plusDays(1).minusSeconds(1);
+        return listarPorRangoFechas(inicioDia, finDia);
+    }
+
+    @Override
+    public List<Venta> listarPorUsuario(int usuarioId) {
+        return ventas.stream()
+                .filter(v -> v.getUsuarioId() == usuarioId)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public int guardar(Venta venta) {
+        venta.setId(nextId++);
+        venta.setFechaHora(LocalDateTime.now());
+        venta.setEstado("ACTIVA");
+        ventas.add(venta);
+        return venta.getId();
+    }
+
+    @Override
+    public void anular(int id) {
+        Venta venta = buscarPorId(id);
+        if (venta != null) {
+            venta.setEstado("ANULADA");
+        }
+    }
+
+    @Override
+    public double calcularTotalPorRango(LocalDateTime desde, LocalDateTime hasta) {
+        return listarPorRangoFechas(desde, hasta).stream()
+                .filter(v -> "ACTIVA".equals(v.getEstado()))
+                .mapToDouble(Venta::getTotal)
+                .sum();
+    }
+
+    @Override
+    public double calcularTotalDelDia() {
+        return listarDelDia().stream()
+                .filter(v -> "ACTIVA".equals(v.getEstado()))
+                .mapToDouble(Venta::getTotal)
+                .sum();
+    }
+}
