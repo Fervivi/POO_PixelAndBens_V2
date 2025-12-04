@@ -3,9 +3,7 @@ package cl.fernandov.pnb.repository;
 import cl.fernandov.pnb.model.Producto;
 import java.util.List;
 
-/**
- * Contrato de operaciones para acceso a datos de Producto
- */
+
 public interface IProductoRepository {
 
     Producto buscarPorId(int id);

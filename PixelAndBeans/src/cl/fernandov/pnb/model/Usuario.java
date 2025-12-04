@@ -20,7 +20,7 @@ public class Usuario {
         this.activo = activo;
     }
 
-    // --- GETTERS Y SETTERS ---
+
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 

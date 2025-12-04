@@ -8,9 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Implementación Mock (en memoria) del repositorio de Venta
- */
+
 public class VentaRepositoryMock implements IVentaRepository {
 
     private final List<Venta> ventas;
@@ -23,7 +21,7 @@ public class VentaRepositoryMock implements IVentaRepository {
     }
 
     private void cargarDatosIniciales() {
-        // Ventas de ejemplo (ID de usuario 1=admin, 2=operador1)
+
         LocalDateTime ahora = LocalDateTime.now();
 
         ventas.add(new Venta(nextId++, ahora.minusHours(5), 1, "admin", 7500, "ACTIVA"));

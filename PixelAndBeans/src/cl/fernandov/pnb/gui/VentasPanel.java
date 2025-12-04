@@ -11,7 +11,7 @@ public class VentasPanel extends JPanel {
 
     private final Color BACKGROUND_COLOR = new Color(51, 51, 51);
     private final Color TEXT_COLOR = Color.LIGHT_GRAY;
-    private final Color ACCENT_COLOR = new Color(0, 191, 255); // Azul/Cian
+    private final Color ACCENT_COLOR = new Color(0, 191, 255);
 
 
     private JTextField searchField;
@@ -84,7 +84,7 @@ public class VentasPanel extends JPanel {
         JPanel controlPanel = createControlPanel();
         gbc.gridx = 0;
         gbc.gridy = 4;
-        gbc.gridwidth = 2; // Ocupa todo el ancho
+        gbc.gridwidth = 2;
         gbc.weighty = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         mainPanel.add(controlPanel, gbc);

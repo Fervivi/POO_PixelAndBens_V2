@@ -6,9 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Implementación Mock (en memoria) del repositorio de Producto
- */
+
 public class ProductoRepositoryMock implements IProductoRepository {
 
     private final List<Producto> productos;

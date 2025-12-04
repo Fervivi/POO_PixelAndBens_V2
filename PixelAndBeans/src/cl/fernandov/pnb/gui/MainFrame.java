@@ -1,11 +1,9 @@
 package cl.fernandov.pnb.gui; // 👈 CORRECCIÓN: Usa el nombre de tu carpeta 'fernando'
 
-// Imports de la Arquitectura (con 'v')
+
 import cl.fernandov.pnb.model.Usuario;
 
-// Imports de los Paneles (de la misma carpeta, por eso solo necesitamos el nombre)
 
-// Imports de Java Swing y AWT (gráficos y eventos)
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,17 +15,15 @@ public class MainFrame extends JFrame {
     private JPanel contentPanel;
     private JLabel statusLabel;
 
-    // --- Estilos Comunes ---
+
     private final Color BACKGROUND_COLOR = new Color(51, 51, 51);
     private final Color TEXT_COLOR = Color.LIGHT_GRAY;
 
-    // =========================================================
-    // CONSTRUCTOR CON INYECCIÓN DE USUARIO
-    // =========================================================
+
     public MainFrame(Usuario usuarioLogeado) {
-        // Validación del usuario logeado
+
         if (usuarioLogeado == null) {
-            // Este es el error que te salía al darle play al MainFrame
+
             throw new IllegalArgumentException("No se puede iniciar MainFrame sin un usuario logeado.");
         }
         this.usuarioLogeado = usuarioLogeado;
@@ -121,7 +117,7 @@ public class MainFrame extends JFrame {
         statusPanel.setBackground(new Color(60, 60, 60));
         statusPanel.setPreferredSize(new Dimension(getWidth(), 30));
 
-        // Muestra datos del usuario logeado
+
         statusLabel = new JLabel("Usuario: " + usuarioLogeado.getNombreCompleto() +
                 " (" + usuarioLogeado.getRol() + " - sesión activa)");
         statusLabel.setForeground(TEXT_COLOR);
@@ -177,7 +173,7 @@ public class MainFrame extends JFrame {
 
 
     public static void main(String[] args) {
-        // Solo para pruebas
+
         Usuario mockAdmin = new Usuario(99, "testadmin", "pass", "Administrador de Prueba", "ADMIN", true);
         SwingUtilities.invokeLater(() -> {
             MainFrame frame = new MainFrame(mockAdmin);

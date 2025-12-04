@@ -25,7 +25,7 @@ public class Venta {
         this.estado = estado;
     }
 
-    // --- GETTERS ---
+
     public int getId() { return id; }
     public LocalDateTime getFechaHora() { return fechaHora; }
     public int getUsuarioId() { return usuarioId; }
@@ -33,10 +33,10 @@ public class Venta {
     public double getTotal() { return total; }
     public String getEstado() { return estado; }
 
-    // --- SETTERS (Los que faltan) ---
+
     public void setId(int id) { this.id = id; }
     public void setFechaHora(LocalDateTime fechaHora) { this.fechaHora = fechaHora; }
-    // ESTOS MÉTODOS DEBEN EXISTIR EN VENTA.JAVA
+
     public void setUsuarioId(int usuarioId) { this.usuarioId = usuarioId; }
     public void setUsuarioNombre(String usuarioNombre) { this.usuarioNombre = usuarioNombre; }
     public void setTotal(double total) { this.total = total; }

@@ -11,16 +11,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-/**
- * Panel para la gestión de usuarios (CRUD).
- * Implementa la Inyección de Dependencia para obtener el controlador.
- */
+
 public class UsuariosPanel extends JPanel {
 
-    // --- Inyección de Dependencia ---
+
     private final UsuarioController usuarioController;
 
-    // --- Componentes de la GUI ---
+
     private DefaultTableModel tableModel;
     private JTable usuarioTable;
     private JTextField txtBusqueda;
@@ -30,31 +27,30 @@ public class UsuariosPanel extends JPanel {
     private JButton btnCancelar;
     private JButton btnActualizarEstado;
 
-    // Campos del formulario
+
     private JTextField txtUsername;
     private JTextField txtNombreCompleto;
     private JComboBox<String> cmbRol;
     private JCheckBox chkActivo;
 
-    // Campo oculto para el ID del usuario seleccionado
+
     private int selectedUserId = -1;
 
-    // Constantes de Rol
+
     private final String ROL_ADMIN = "ADMIN";
     private final String ROL_OPERADOR = "OPERADOR";
 
 
     public UsuariosPanel() {
-        // 1. OBTENER EL CONTROLADOR
         this.usuarioController = ApplicationContext.getInstance().getUsuarioController();
 
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // 2. CONFIGURAR COMPONENTES
+
         configurarTabla();
 
-        // 3. CONSTRUIR PANELES
+
         JPanel searchPanel = createSearchPanel();
         JPanel formPanel = createFormPanel();
 
@@ -64,10 +60,10 @@ public class UsuariosPanel extends JPanel {
         add(searchPanel, BorderLayout.NORTH);
         add(splitPane, BorderLayout.CENTER);
 
-        // 4. LISTENERS Y CARGA INICIAL
+
         configurarListeners();
-        loadDataFromController(); // Carga real de datos
-        limpiarFormulario(); // Inicialmente el formulario está limpio
+        loadDataFromController();
+        limpiarFormulario();
     }
 
     private void configurarTabla() {
@@ -75,20 +71,19 @@ public class UsuariosPanel extends JPanel {
         tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // Las celdas de la tabla no son editables
+                return false;
             }
-            // Método para obtener el ID real (la tabla no mostrará el ID, pero lo usa internamente)
+
             public int getUserIdAt(int row) {
-                // Asume que la columna 0 es el ID
+
                 return (int) getValueAt(row, 0);
             }
         };
         usuarioTable = new JTable(tableModel);
 
-        // Configuración para ocultar la columna ID si es necesario
-        // usuarioTable.removeColumn(usuarioTable.getColumnModel().getColumn(0));
 
-        // Listener para seleccionar una fila y cargar el formulario
+
+
         usuarioTable.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting() && usuarioTable.getSelectedRow() != -1) {
                 cargarUsuarioSeleccionado();
@@ -117,46 +112,46 @@ public class UsuariosPanel extends JPanel {
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Título del formulario
+
         JLabel titleLabel = new JLabel("Detalle del Usuario", SwingConstants.CENTER);
         titleLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
         panel.add(titleLabel, BorderLayout.NORTH);
 
-        // Campos: Username
+
         gbc.gridx = 0; gbc.gridy = 0; gbc.anchor = GridBagConstraints.WEST;
         form.add(new JLabel("Username:"), gbc);
         gbc.gridx = 1; gbc.weightx = 1.0;
         txtUsername = new JTextField(15);
         form.add(txtUsername, gbc);
 
-        // Campos: Nombre Completo
+
         gbc.gridx = 0; gbc.gridy = 1; gbc.weightx = 0;
         form.add(new JLabel("Nombre Completo:"), gbc);
         gbc.gridx = 1; gbc.weightx = 1.0;
         txtNombreCompleto = new JTextField(15);
         form.add(txtNombreCompleto, gbc);
 
-        // Campos: Rol
+
         gbc.gridx = 0; gbc.gridy = 2; gbc.weightx = 0;
         form.add(new JLabel("Rol:"), gbc);
         gbc.gridx = 1; gbc.weightx = 1.0;
         cmbRol = new JComboBox<>(new String[]{ROL_ADMIN, ROL_OPERADOR});
         form.add(cmbRol, gbc);
 
-        // Campos: Activo
+
         gbc.gridx = 0; gbc.gridy = 3; gbc.weightx = 0;
         form.add(new JLabel("Activo:"), gbc);
         gbc.gridx = 1; gbc.weightx = 1.0;
         chkActivo = new JCheckBox();
         form.add(chkActivo, gbc);
 
-        // Separador para empujar los botones hacia abajo
+
         gbc.gridx = 0; gbc.gridy = 4; gbc.gridwidth = 2; gbc.weighty = 1.0;
         form.add(new JPanel(), gbc);
 
         panel.add(form, BorderLayout.CENTER);
 
-        // Panel de botones (Sur)
+
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         btnGuardar = new JButton("Guardar/Actualizar");
         btnCancelar = new JButton("Cancelar");
@@ -171,22 +166,16 @@ public class UsuariosPanel extends JPanel {
         return panel;
     }
 
-    // =========================================================
-    // LÓGICA DE NEGOCIO (Conexión al Controller)
-    // =========================================================
 
-    /**
-     * Carga todos los usuarios activos en la JTable.
-     */
     private void loadDataFromController() {
-        tableModel.setRowCount(0); // Limpiar la tabla
+        tableModel.setRowCount(0);
 
         try {
             List<Usuario> usuarios = usuarioController.listarTodos();
 
             for (Usuario u : usuarios) {
                 tableModel.addRow(new Object[]{
-                        u.getId(), // El ID se usa internamente, no se muestra necesariamente
+                        u.getId(),
                         u.getUsername(),
                         u.getNombreCompleto(),
                         u.getRol(),
@@ -200,14 +189,12 @@ public class UsuariosPanel extends JPanel {
         }
     }
 
-    /**
-     * Carga el usuario seleccionado en el formulario.
-     */
+
     private void cargarUsuarioSeleccionado() {
         int row = usuarioTable.getSelectedRow();
         if (row != -1) {
             try {
-                // Obtener el ID de la columna 0 (que asumimos es el ID)
+
                 selectedUserId = (int) tableModel.getValueAt(row, 0);
                 Usuario usuario = usuarioController.buscarPorId(selectedUserId);
 
@@ -217,7 +204,7 @@ public class UsuariosPanel extends JPanel {
                     cmbRol.setSelectedItem(usuario.getRol());
                     chkActivo.setSelected(usuario.isActivo());
 
-                    // Solo se permite editar el username al crear, no al actualizar
+
                     txtUsername.setEditable(false);
                     btnActualizarEstado.setText(usuario.isActivo() ? "Desactivar Usuario" : "Activar Usuario");
                 }
@@ -229,9 +216,7 @@ public class UsuariosPanel extends JPanel {
         }
     }
 
-    /**
-     * Lógica para crear o actualizar un usuario.
-     */
+
     private void guardarUsuario() {
         String username = txtUsername.getText();
         String nombre = txtNombreCompleto.getText();
@@ -239,15 +224,15 @@ public class UsuariosPanel extends JPanel {
         boolean activo = chkActivo.isSelected();
 
         try {
-            // Validación de campos básica
+
             if (username.isEmpty() || nombre.isEmpty()) {
                 throw new IllegalArgumentException("El username y el nombre completo son obligatorios.");
             }
 
             if (selectedUserId == -1) {
-                // CREAR NUEVO USUARIO
 
-                // Nota: La contraseña debe ser manejada, aquí se usa una simulación
+
+
                 String password = JOptionPane.showInputDialog(this, "Ingrese la contraseña para el nuevo usuario:");
                 if (password == null || password.isEmpty()) {
                     throw new IllegalArgumentException("La contraseña es obligatoria.");
@@ -256,13 +241,13 @@ public class UsuariosPanel extends JPanel {
                 usuarioController.crearUsuario(username, password, nombre, rol);
                 JOptionPane.showMessageDialog(this, "Usuario creado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                // ACTUALIZAR USUARIO EXISTENTE
+
                 usuarioController.actualizarUsuario(selectedUserId, nombre, rol, activo);
                 JOptionPane.showMessageDialog(this, "Usuario actualizado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             }
 
             limpiarFormulario();
-            loadDataFromController(); // Refrescar la tabla
+            loadDataFromController();
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error de Validación", JOptionPane.WARNING_MESSAGE);
         } catch (RuntimeException e) {
@@ -272,17 +257,15 @@ public class UsuariosPanel extends JPanel {
         }
     }
 
-    /**
-     * Actualiza el estado activo/inactivo del usuario.
-     */
+
     private void cambiarEstadoUsuario() {
         if (selectedUserId != -1) {
             try {
-                // El servicio maneja la lógica de si es activo o inactivo
+
                 usuarioController.actualizarUsuario(selectedUserId,
                         txtNombreCompleto.getText(),
                         (String) cmbRol.getSelectedItem(),
-                        !chkActivo.isSelected()); // Cambia el estado actual
+                        !chkActivo.isSelected());
 
                 JOptionPane.showMessageDialog(this, "Estado del usuario cambiado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 limpiarFormulario();
@@ -297,9 +280,7 @@ public class UsuariosPanel extends JPanel {
         }
     }
 
-    /**
-     * Busca usuarios según el texto ingresado.
-     */
+
     private void buscarUsuarios() {
         String texto = txtBusqueda.getText();
         tableModel.setRowCount(0);
@@ -324,9 +305,6 @@ public class UsuariosPanel extends JPanel {
     }
 
 
-    // =========================================================
-    // UTILIDADES DE LA GUI
-    // =========================================================
 
     private void limpiarFormulario() {
         txtUsername.setText("");
@@ -334,7 +312,7 @@ public class UsuariosPanel extends JPanel {
         cmbRol.setSelectedIndex(0);
         chkActivo.setSelected(true);
         selectedUserId = -1;
-        txtUsername.setEditable(true); // Permite editar al crear
+        txtUsername.setEditable(true);
         usuarioTable.clearSelection();
         btnActualizarEstado.setText("Cambiar Estado (Act/Inact)");
     }

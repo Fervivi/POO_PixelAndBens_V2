@@ -6,9 +6,7 @@ import cl.fernandov.pnb.service.VentaService;
 import cl.fernandov.pnb.service.ProductoService;
 import java.util.List;
 
-/**
- * Controlador para el registro y consulta de ventas.
- */
+
 public class VentaController {
 
     private final VentaService ventaService;
@@ -32,7 +30,7 @@ public class VentaController {
     }
 
     public int registrarVenta(int usuarioId, String usuarioNombre, double total) {
-        // En esta capa se coordina la lógica de negocio
+
         return ventaService.registrarVenta(usuarioId, usuarioNombre, total);
     }
 

@@ -4,9 +4,7 @@ import cl.fernandov.pnb.model.Venta;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * Contrato de operaciones para acceso a datos de Venta
- */
+
 public interface IVentaRepository {
 
     Venta buscarPorId(int id);

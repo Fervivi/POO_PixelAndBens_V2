@@ -14,15 +14,14 @@ import java.awt.*;
 
 public class LoginFrame extends JFrame {
 
-    // 1. Declaración del Controlador
     private final LoginController loginController;
 
-    // Campos de la GUI
+
     private JTextField userField;
     private JPasswordField passwordField;
     private JButton loginButton;
 
-    // Colores y Estilos (Tomados de tu código original)
+
     private final Color COLOR_BG_MAIN = new Color(20, 20, 30);
     private final Color COLOR_CARD = new Color(35, 35, 50);
     private final Color COLOR_TEXT_FIELD_BG = new Color(50, 50, 65);
@@ -30,7 +29,7 @@ public class LoginFrame extends JFrame {
     private final Color COLOR_TEXT_LIGHT = new Color(200, 200, 200);
 
     public LoginFrame() {
-        // Inicializar el controlador (Inyección de Dependencia)
+
         this.loginController = ApplicationContext.getInstance().getLoginController();
 
         setTitle("Pixel & Bean - Sistema de Gestión");
@@ -45,12 +44,12 @@ public class LoginFrame extends JFrame {
         pack();
         setLocationRelativeTo(null);
 
-        // Configurar los listeners para el botón de Login
+
         configurarListeners();
     }
 
     private JPanel crearLoginCardPanel() {
-        // --- Contenido del Panel de Diseño Original ---
+
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBackground(COLOR_CARD);
         panel.setBorder(new EmptyBorder(40, 40, 40, 40));
@@ -61,7 +60,7 @@ public class LoginFrame extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
 
-        // Título: Pixel & Bean
+
         JLabel titleLabel = new JLabel("Pixel & Bean", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 26));
         titleLabel.setForeground(COLOR_BLUE_PRIMARY);
@@ -69,7 +68,7 @@ public class LoginFrame extends JFrame {
         gbc.insets = new Insets(0, 0, 10, 0);
         panel.add(titleLabel, gbc);
 
-        // Subtítulo: INICIAR SESIÓN
+
         JLabel subtitleLabel = new JLabel("INICIAR SESIÓN", SwingConstants.CENTER);
         subtitleLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         subtitleLabel.setForeground(COLOR_TEXT_LIGHT);
@@ -79,18 +78,18 @@ public class LoginFrame extends JFrame {
 
         gbc.insets = new Insets(8, 0, 8, 0);
 
-        // Campo USUARIO
+
         gbc.gridy = 2;
         panel.add(createInputPanel("USUARIO", true), gbc);
 
-        // Campo CONTRASEÑA
+
         gbc.gridy = 3;
         panel.add(createInputPanel("CONTRASEÑA", false), gbc);
 
         gbc.gridy = 4;
         panel.add(Box.createVerticalStrut(10), gbc);
 
-        // Botón INICIAR SESIÓN
+
         loginButton = new JButton("INICIAR SESIÓN");
         loginButton.setFont(new Font("Arial", Font.BOLD, 15));
         loginButton.setForeground(Color.WHITE);
@@ -102,7 +101,7 @@ public class LoginFrame extends JFrame {
         gbc.insets = new Insets(20, 0, 20, 0);
         panel.add(loginButton, gbc);
 
-        // Botón Salir de la Aplicación
+
         JButton exitButton = new JButton("Salir de la Aplicación");
         exitButton.setFont(new Font("Arial", Font.PLAIN, 12));
         exitButton.setForeground(COLOR_TEXT_LIGHT);
@@ -154,23 +153,21 @@ public class LoginFrame extends JFrame {
             String pass = new String(passwordField.getPassword());
 
             try {
-                // 2. LLAMADA A LA ARQUITECTURA (LoginController)
+
                 Usuario usuarioLogeado = loginController.autenticar(user, pass);
 
-                // Si la autenticación es exitosa:
-                // Abrir el MainFrame, pasándole el objeto Usuario
                 new MainFrame(usuarioLogeado).setVisible(true);
                 dispose();
 
             } catch (IllegalArgumentException ex) {
-                // Errores de validación (campos vacíos)
+
                 JOptionPane.showMessageDialog(this,
                         ex.getMessage(),
                         "Datos Incompletos",
                         JOptionPane.WARNING_MESSAGE);
 
             } catch (RuntimeException ex) {
-                // Errores de negocio (credenciales incorrectas, usuario inactivo)
+
                 JOptionPane.showMessageDialog(this,
                         ex.getMessage(),
                         "Error de Autenticación",

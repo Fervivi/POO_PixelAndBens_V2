@@ -3,9 +3,7 @@ package cl.fernandov.pnb.repository;
 import cl.fernandov.pnb.model.Usuario;
 import java.util.List;
 
-/**
- * Contrato de operaciones para acceso a datos de Usuario
- */
+
 public interface IUsuarioRepository {
 
     Usuario buscarPorId(int id);

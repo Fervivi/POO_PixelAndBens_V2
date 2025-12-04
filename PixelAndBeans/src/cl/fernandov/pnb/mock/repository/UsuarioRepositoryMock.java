@@ -6,9 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Implementación Mock (en memoria) del repositorio de Usuario
- */
+
 public class UsuarioRepositoryMock implements IUsuarioRepository {
 
     private final List<Usuario> usuarios;
@@ -21,7 +19,7 @@ public class UsuarioRepositoryMock implements IUsuarioRepository {
     }
 
     private void cargarDatosIniciales() {
-        // Usuarios de ejemplo: ID 1 es ADMIN, ID 2, 3 son OPERADOR
+
         usuarios.add(new Usuario(nextId++, "admin", "admin123",  // ID 1
                 "Administrador del Sistema", "ADMIN", true));
         usuarios.add(new Usuario(nextId++, "operador1", "op123",   // ID 2
